@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Liquid from 'liquid-node';
 
 class App extends Component {
   render() {
+    let engine = new Liquid.Engine();
+    engine
+    .parse("Hello {{name}}")
+    .then((template) => { template.render({ name: "Robyn"})})
+    .then((result) => { console.log(result)});
+
     return (
       <div className="App">
         <header className="App-header">
