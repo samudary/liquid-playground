@@ -1,6 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
 import Liquid from 'liquid-node';
+import 'bulma/css/bulma.css';
 
 // Assets
 import logo from './logo.svg';
@@ -26,6 +27,7 @@ class App extends Component {
         <Header />
         <Input />
         <Renderer />
+
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
