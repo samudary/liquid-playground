@@ -4,7 +4,6 @@ import Liquid from 'liquid-node';
 import 'bulma/css/bulma.css';
 
 // Assets
-import logo from './logo.svg';
 import './App.css';
 
 // Components
@@ -18,29 +17,45 @@ class App extends Component {
 
     this.state = {
       variables: {
-        base: "",
-        editedVariable: ""
-      }
+        editedObjectName: "",
+        chosenObjectName: ""
+      },
+      liquidInput: ""
     }
 
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
+    this.handleLiquidInput = this.handleLiquidInput.bind(this);
   }
 
-  outputLiquid = () => {
-    let engine = new Liquid.Engine();
+  handleLiquidInput = (event) => {
+    this.setState({
+      liquidInput: event.target.value
+    })
+  }
+
+  liquidHandler = () => {
+    const engine = new Liquid.Engine();
+    let chosenObject = this.state.variables.chosenObjectName;
+
     engine
-    .parse("Hello {{name}}")
-    .then((template) => { return template.render({ name: "Robyn"})})
+    // .parse("Hello {{subscriber.name}}")
+    .parse(this.state.liquidInput)
+    .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
     .then((result) => { console.log(result)});
   }
 
   inputChangedHandler = (event) => {
-    this.setState({ variables: { editedVariable: event.target.value } });
+    this.setState({ variables: { editedObjectName: event.target.value } });
   }
 
   localStorageHandler = (event) => {
     event.preventDefault();
+    this.setState({
+      variables: {
+        chosenObjectName: this.state.variables.editedObjectName
+      }
+    });
     // To do store variable in local storage
   }
 
@@ -48,18 +63,16 @@ class App extends Component {
     return (
       <div className="App container">
         <Header />
-        <Input storeVariable={this.localStorageHandler} inputChange={this.inputChangedHandler}/>
+        <Input
+          storeVariable={this.localStorageHandler}
+          inputChange={this.inputChangedHandler}
+          chosenObject={this.state.variables.chosenObjectName}
+          handleLiquidInput={this.handleLiquidInput}
+        />
         <Renderer />
-
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={this.outputLiquid}>Do Liquid</button>
+        <button onClick={this.liquidHandler}>Do Liquid</button>
         <p>Base: {this.state.variables.editedVariable}</p>
+        <p>Chosen Object Name: {this.state.variables.chosenObjectName}</p>
       </div>
     );
   }
