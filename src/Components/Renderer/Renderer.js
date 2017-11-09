@@ -1,9 +1,9 @@
 import React from 'react';
 
-const renderer = () => {
+const Renderer = () => {
   return (
     <div></div>
   );
 }
 
-export default renderer;
+export default Renderer;
