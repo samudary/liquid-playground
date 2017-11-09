@@ -18,7 +18,7 @@ class App extends Component {
     this.state = {
       variables: {
         editedObjectName: "",
-        chosenObjectName: ""
+        chosenObjectName: "subscriber"
       },
       liquidInput: ""
     }
