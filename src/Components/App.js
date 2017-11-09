@@ -32,6 +32,8 @@ class App extends Component {
     this.setState({
       liquidInput: event.target.value
     })
+
+    console.log(this.state.liquidInput);
   }
 
   liquidHandler = () => {

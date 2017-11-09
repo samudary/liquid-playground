@@ -1,0 +1,15 @@
+.intro-text {
+  margin-bottom: 30px;
+}
+
+.column-adjusted {
+  margin-top: 30px;
+}
+
+.field:not(:last-child) {
+  margin-bottom: 1.75rem;
+}
+
+.variable-list {
+
+}

@@ -4,10 +4,10 @@ import './Input.css';
 const Input = (props) => {
   return (
     <div>
-      <h3>What type of object?</h3>
-
       <div className="columns">
-        <div className="column">
+        <div className="column column-adjusted">
+          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>. You can change this object name below.</p>
+
           <div className="field is-grouped">
             <p className="control">
               <input className="input"
@@ -24,19 +24,20 @@ const Input = (props) => {
           </div>
 
           <div className="field">
-            <label className="label">Enter your Liquid statement here</label>
+            <label className="label has-text-left">Enter your Liquid statement here</label>
             <div className="control">
               <textarea
                 className="textarea"
-                placeholder="Textarea"
-                onBlur={props.handleLiquidInput}
+                placeholder="Enter your Liquid statements here and they'll get rendered on the right"
+                onChange={props.handleLiquidInput}
+                onPaste={props.handleLiquidInput}
+                rows="18"
               ></textarea>
             </div>
           </div>
         </div>
 
-        <div className="column">
-          Chosen Object Name: {props.chosenObject}
+        <div className="column column-adjusted">
         </div>
       </div>
     </div>
