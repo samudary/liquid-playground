@@ -58,7 +58,7 @@ class App extends Component {
         chosenObjectName: this.state.variables.editedObjectName
       }
     });
-    // To do store variable in local storage
+    // TODO: store variable in local storage
   }
 
   render() {
@@ -70,6 +70,7 @@ class App extends Component {
           inputChange={this.inputChangedHandler}
           chosenObject={this.state.variables.chosenObjectName}
           handleLiquidInput={this.handleLiquidInput}
+          defaultObject={this.state.variables.chosenObjectName}
         />
         <Renderer />
         <button onClick={this.liquidHandler}>Do Liquid</button>

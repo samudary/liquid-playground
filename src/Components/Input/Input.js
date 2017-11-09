@@ -38,6 +38,9 @@ const Input = (props) => {
         </div>
 
         <div className="column column-adjusted">
+          <div className="variable-list has-text-left">
+            <strong>Current Liquid object</strong>: <code>{props.defaultObject}</code>
+          </div>
         </div>
       </div>
     </div>
