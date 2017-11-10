@@ -23,7 +23,8 @@ class App extends Component {
         chosenObjectName: "subscriber"
       },
       liquidInput: "",
-      parsedLiquid: ""
+      parsedLiquid: "",
+      errors: []
     }
 
     this.localStorageHandler = this.localStorageHandler.bind(this);
@@ -40,6 +41,8 @@ class App extends Component {
     engine
     .parse(this.state.liquidInput)
     .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
+    .catch((ex) => { this.setState({ errors: [ex.name] }) })
+    // TODO: Better error handling
     .then((result) => {
       this.setState({ parsedLiquid: result });
     });
@@ -83,6 +86,8 @@ class App extends Component {
             />
           </div>
         </div>
+
+        <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
       </div>
