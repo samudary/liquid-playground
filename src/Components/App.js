@@ -27,9 +27,9 @@ class App extends Component {
       errors: []
     }
 
-    this.localStorageHandler = this.localStorageHandler.bind(this);
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
+    this.localStorageHandler = this.localStorageHandler.bind(this);
   }
 
   handleLiquidInput = (event) => {
