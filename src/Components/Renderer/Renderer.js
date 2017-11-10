@@ -1,8 +1,11 @@
 import React from 'react';
+import './Renderer.css';
 
-const Renderer = () => {
+const Renderer = (props) => {
   return (
-    <div></div>
+    <div className="Renderer">
+
+    </div>
   );
 }
 

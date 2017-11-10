@@ -2,21 +2,6 @@
   margin-bottom: 30px;
 }
 
-.column-adjusted {
-  margin-top: 30px;
-}
-
-.field:not(:last-child) {
-  margin-bottom: 1.75rem;
-}
-
-.variable-list {
-  border: 1px solid #e9e9e9;
-  min-height: 150px;
-  border-radius: 5px;
-  padding: 15px;
-}
-
 .textarea {
   padding: 15px;
 }

@@ -7,9 +7,10 @@ import 'bulma/css/bulma.css';
 import './App.css';
 
 // Components
+import PageHeader from './PageHeader/PageHeader';
+import InputHeader from './InputHeader/InputHeader';
 import Input from './Input/Input';
 import Renderer from './Renderer/Renderer';
-import Header from './Header/Header';
 
 class App extends Component {
   constructor(props) {
@@ -64,15 +65,24 @@ class App extends Component {
   render() {
     return (
       <div className="App container">
-        <Header />
-        <Input
+        <PageHeader />
+        <InputHeader
           storeVariable={this.localStorageHandler}
           inputChange={this.inputChangedHandler}
-          chosenObject={this.state.variables.chosenObjectName}
-          handleLiquidInput={this.handleLiquidInput}
           defaultObject={this.state.variables.chosenObjectName}
         />
-        <Renderer />
+        <div className="columns">
+          <div className="column column-adjusted">
+            <Input
+              handleLiquidInput={this.handleLiquidInput}
+            />
+          </div>
+
+          <div className="column column-adjusted">
+            <Renderer />
+          </div>
+        </div>
+
         <button onClick={this.liquidHandler}>Do Liquid</button>
         <p>Base: {this.state.variables.editedVariable}</p>
         <p>Chosen Object Name: {this.state.variables.chosenObjectName}</p>
