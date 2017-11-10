@@ -10,7 +10,7 @@ const Input = (props) => {
           <textarea
             className="textarea"
             placeholder="Enter your Liquid statements here and they'll get rendered on the right"
-            onChange={props.handleLiquidInput}
+            onKeyUp={props.handleLiquidInput}
             onPaste={props.handleLiquidInput}
             rows="15"
           ></textarea>
