@@ -12,7 +12,7 @@ const Input = (props) => {
             placeholder="Enter your Liquid statements here and they'll get rendered on the right"
             onChange={props.handleLiquidInput}
             onPaste={props.handleLiquidInput}
-            rows="18"
+            rows="15"
           ></textarea>
         </div>
       </div>

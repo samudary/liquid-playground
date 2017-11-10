@@ -11,6 +11,7 @@ import PageHeader from './PageHeader/PageHeader';
 import InputHeader from './InputHeader/InputHeader';
 import Input from './Input/Input';
 import Renderer from './Renderer/Renderer';
+import Footer from './Footer/Footer';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class App extends Component {
         editedObjectName: "",
         chosenObjectName: "subscriber"
       },
-      liquidInput: ""
+      liquidInput: "",
+      parsedLiquid: ""
     }
 
     this.localStorageHandler = this.localStorageHandler.bind(this);
@@ -30,22 +32,17 @@ class App extends Component {
   }
 
   handleLiquidInput = (event) => {
-    this.setState({
-      liquidInput: event.target.value
-    })
+    this.setState({ liquidInput: event.target.value });
 
-    console.log(this.state.liquidInput);
-  }
-
-  liquidHandler = () => {
     const engine = new Liquid.Engine();
     let chosenObject = this.state.variables.chosenObjectName;
 
     engine
-    // .parse("Hello {{subscriber.name}}")
     .parse(this.state.liquidInput)
     .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
-    .then((result) => { console.log(result)});
+    .then((result) => {
+      this.setState({ parsedLiquid: result });
+    });
   }
 
   inputChangedHandler = (event) => {
@@ -66,11 +63,13 @@ class App extends Component {
     return (
       <div className="App container">
         <PageHeader />
+
         <InputHeader
           storeVariable={this.localStorageHandler}
           inputChange={this.inputChangedHandler}
           defaultObject={this.state.variables.chosenObjectName}
         />
+
         <div className="columns">
           <div className="column column-adjusted">
             <Input
@@ -79,13 +78,13 @@ class App extends Component {
           </div>
 
           <div className="column column-adjusted">
-            <Renderer />
+            <Renderer
+              parsedLiquid={this.state.parsedLiquid}
+            />
           </div>
         </div>
 
-        <button onClick={this.liquidHandler}>Do Liquid</button>
-        <p>Base: {this.state.variables.editedVariable}</p>
-        <p>Chosen Object Name: {this.state.variables.chosenObjectName}</p>
+        <Footer />
       </div>
     );
   }
