@@ -26,16 +26,20 @@ class App extends Component {
       liquidInput: "",
       parsedLiquid: "",
       errors: [],
-      showModal: false
+      showModal: false,
+      modalLiquid: ""
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.modalHandler = this.modalHandler.bind(this);
+    this.handleModalLiquid = this.handleModalLiquid.bind(this);
+    this.handlePastedLiquid = this.handlePastedLiquid.bind(this);
   }
 
   handleLiquidInput = (event) => {
+    console.log(event.target.value)
     this.setState({ liquidInput: event.target.value });
 
     const engine = new Liquid.Engine();
@@ -70,6 +74,15 @@ class App extends Component {
     this.setState({showModal: !modalShown});
   }
 
+  handleModalLiquid = (event) => {
+    this.setState({ showModal: false });
+    this.forceUpdate();
+  }
+
+  handlePastedLiquid = (event) => {
+    this.setState({ modalLiquid: event.target.value });
+  }
+
   render() {
     return (
       <div className="App container">
@@ -99,7 +112,10 @@ class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
-        <PasteModal showModal={this.state.showModal}/>
+        <PasteModal
+          showModal={this.state.showModal}
+          handlePastedLiquid={this.state.handlePastedLiquid}
+          handleModalLiquid={this.handleModalLiquid} />
       </div>
     );
   }
