@@ -12,6 +12,7 @@ import InputHeader from './InputHeader/InputHeader';
 import Input from './Input/Input';
 import Renderer from './Renderer/Renderer';
 import Footer from './Footer/Footer';
+import PasteModal from './PasteModal/PasteModal';
 
 class App extends Component {
   constructor(props) {
@@ -24,12 +25,14 @@ class App extends Component {
       },
       liquidInput: "",
       parsedLiquid: "",
-      errors: []
+      errors: [],
+      showModal: false
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
+    this.modalHandler = this.modalHandler.bind(this);
   }
 
   handleLiquidInput = (event) => {
@@ -39,13 +42,13 @@ class App extends Component {
     let chosenObject = this.state.variables.chosenObjectName;
 
     engine
-    .parse(this.state.liquidInput)
-    .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
-    .catch((ex) => { this.setState({ errors: [ex.name] }) })
-    // TODO: Better error handling
-    .then((result) => {
-      this.setState({ parsedLiquid: result });
-    });
+      .parse(this.state.liquidInput)
+      .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
+      .catch((ex) => { this.setState({ errors: [ex.name] }) })
+      // TODO: Better error handling
+      .then((result) => {
+        this.setState({ parsedLiquid: result });
+      });
   }
 
   inputChangedHandler = (event) => {
@@ -60,6 +63,11 @@ class App extends Component {
       }
     });
     // TODO: store variable in local storage
+  }
+
+  modalHandler = () => {
+    const modalShown = this.state.showModal;
+    this.setState({showModal: !modalShown});
   }
 
   render() {
@@ -77,6 +85,7 @@ class App extends Component {
           <div className="column column-adjusted">
             <Input
               handleLiquidInput={this.handleLiquidInput}
+              modalHandler={this.modalHandler}
             />
           </div>
 
@@ -90,6 +99,7 @@ class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
+        <PasteModal showModal={this.state.showModal}/>
       </div>
     );
   }

@@ -14,6 +14,11 @@ const Input = (props) => {
             onPaste={props.handleLiquidInput}
             rows="15"
           ></textarea>
+
+          <a
+            className="button is-primary"
+            onClick={props.modalHandler}
+          >Paste from another source</a>
         </div>
       </div>
     </div>
