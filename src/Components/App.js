@@ -8,11 +8,11 @@ import 'bulma/css/bulma.css';
 import './App.css';
 
 // Components
-import PageHeader from './PageHeader/PageHeader';
-import InputHeader from './InputHeader/InputHeader';
-import Input from './Input/Input';
-import Renderer from './Renderer/Renderer';
-import Footer from './Footer/Footer';
+import PageHeader from './PageHeader';
+import InputHeader from './InputHeader';
+import Input from './Input';
+import Renderer from './Renderer';
+import Footer from './Footer';
 
 class App extends Component {
   constructor(props) {
