@@ -1,6 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
 import Liquid from 'liquid-node';
+import _ from 'lodash';
 import 'bulma/css/bulma.css';
 
 // Assets
@@ -12,7 +13,6 @@ import InputHeader from './InputHeader/InputHeader';
 import Input from './Input/Input';
 import Renderer from './Renderer/Renderer';
 import Footer from './Footer/Footer';
-import PasteModal from './PasteModal/PasteModal';
 
 class App extends Component {
   constructor(props) {
@@ -25,27 +25,24 @@ class App extends Component {
       },
       liquidInput: "",
       parsedLiquid: "",
-      errors: [],
-      showModal: false,
-      modalLiquid: ""
+      errors: []
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
-    this.modalHandler = this.modalHandler.bind(this);
-    this.handleModalLiquid = this.handleModalLiquid.bind(this);
-    this.handlePastedLiquid = this.handlePastedLiquid.bind(this);
+    this.liquidParser = this.liquidParser.bind(this);
+    this.engine = new Liquid.Engine();
   }
 
   handleLiquidInput = (event) => {
-    console.log(event.target.value)
     this.setState({ liquidInput: event.target.value });
+  }
 
-    const engine = new Liquid.Engine();
+  liquidParser = () => {
     let chosenObject = this.state.variables.chosenObjectName;
 
-    engine
+    this.engine
       .parse(this.state.liquidInput)
       .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
       .catch((ex) => { this.setState({ errors: [ex.name] }) })
@@ -53,6 +50,12 @@ class App extends Component {
       .then((result) => {
         this.setState({ parsedLiquid: result });
       });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState, this.state)) {
+      this.liquidParser();
+    }
   }
 
   inputChangedHandler = (event) => {
@@ -67,20 +70,6 @@ class App extends Component {
       }
     });
     // TODO: store variable in local storage
-  }
-
-  modalHandler = () => {
-    const modalShown = this.state.showModal;
-    this.setState({showModal: !modalShown});
-  }
-
-  handleModalLiquid = (event) => {
-    this.setState({ showModal: false });
-    this.forceUpdate();
-  }
-
-  handlePastedLiquid = (event) => {
-    this.setState({ modalLiquid: event.target.value });
   }
 
   render() {
@@ -98,7 +87,6 @@ class App extends Component {
           <div className="column column-adjusted">
             <Input
               handleLiquidInput={this.handleLiquidInput}
-              modalHandler={this.modalHandler}
             />
           </div>
 
@@ -112,10 +100,6 @@ class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
-        <PasteModal
-          showModal={this.state.showModal}
-          handlePastedLiquid={this.state.handlePastedLiquid}
-          handleModalLiquid={this.handleModalLiquid} />
       </div>
     );
   }
