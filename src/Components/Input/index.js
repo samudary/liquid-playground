@@ -12,8 +12,9 @@ const Input = (props) => {
           <TrixEditor
             className="textarea"
             placeholder="Enter your Liquid statements here and they'll get rendered on the right"
-            onKeyUp={props.handleLiquidInput}
-            onPaste={props.handleLiquidInput}
+            // onKeyUp={props.handleLiquidInput}
+            // onPaste={props.handleLiquidInput}
+            onChange={props.handleLiquidInput}
             rows="15"
           />
         </div>

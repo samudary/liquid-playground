@@ -35,8 +35,9 @@ class App extends Component {
     this.engine = new Liquid.Engine();
   }
 
-  handleLiquidInput = (event) => {
-    this.setState({ liquidInput: event.target.value });
+  handleLiquidInput = (html, text) => {
+    // this.setState({ liquidInput: event.target.value });
+    this.setState({ liquidInput: text });
   }
 
   liquidParser = () => {
