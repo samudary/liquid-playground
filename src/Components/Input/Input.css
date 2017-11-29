@@ -6,3 +6,8 @@
   padding: 15px;
   margin-bottom: 15px;
 }
+
+trix-editor {
+  min-height: 22.2em;
+  padding: 15px;
+}

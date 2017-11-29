@@ -10,12 +10,15 @@ trix-editor {
   padding: 0.4em 0.6em;
   min-height: 5em;
   outline: none; }
+
 trix-toolbar * {
   box-sizing: border-box; }
+
 trix-toolbar .trix-button-row {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between; }
+
 trix-toolbar .trix-button-group {
   display: flex;
   margin-bottom: 10px;
@@ -23,6 +26,7 @@ trix-toolbar .trix-button-group {
   border-top-color: #ccc;
   border-bottom-color: #888;
   border-radius: 3px; }
+  
 trix-toolbar .trix-button {
   position: relative;
   float: left;

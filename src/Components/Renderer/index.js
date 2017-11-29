@@ -3,10 +3,17 @@ import './Renderer.css';
 
 const Renderer = (props) => {
   return (
-    <div className="">
+    <div className="Renderer">
       <p className="has-text-left output-title"><strong>Your rendered output appears here</strong>:</p>
-      <div className="parsed-output has-text-left">
-        {props.parsedLiquid}
+
+      <div className="field">
+        <div className="control">
+          <textarea
+            className="textarea"
+            value={props.parsedLiquid}
+            disabled
+          ></textarea>
+        </div>
       </div>
     </div>
   );

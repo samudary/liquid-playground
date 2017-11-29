@@ -1,13 +1,13 @@
 import React from 'react';
-import './Input.css';
 import '../assets/trix.css';
+import './Input.css';
 import { TrixEditor } from "react-trix";
 
 const Input = (props) => {
   return (
     <div>
       <div className="field">
-        <label className="label has-text-left">Enter your Liquid statement here</label>
+        <label className="label has-text-left"></label>
         <div className="control">
           <TrixEditor
             className="textarea"
