@@ -13,6 +13,7 @@ import InputHeader from './InputHeader';
 import Input from './Input';
 import Renderer from './Renderer';
 import Footer from './Footer';
+import TagModal from './TagModal';
 
 class App extends Component {
   constructor(props) {
@@ -25,13 +26,15 @@ class App extends Component {
       },
       liquidInput: "",
       parsedLiquid: "",
-      errors: []
+      errors: [],
+      modalShown: false
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.engine = new Liquid.Engine();
   }
 
@@ -73,6 +76,11 @@ class App extends Component {
     // TODO: store variable in local storage
   }
 
+  showModal = (event) => {
+    let modalState = this.state.modalShown;
+    this.setState({ modalShown: !modalState });
+  }
+
   render() {
     return (
       <div className="App container">
@@ -89,6 +97,11 @@ class App extends Component {
             <Input
               handleLiquidInput={this.handleLiquidInput}
             />
+
+            <a
+              className="button is-pulled-left"
+              onClick={this.showModal}
+            >Liquid Reference</a>
           </div>
 
           <div className="column column-adjusted">
@@ -101,6 +114,7 @@ class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
+        <TagModal modalShown={this.state.modalShown}/>
       </div>
     );
   }
