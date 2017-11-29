@@ -114,7 +114,10 @@ class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
-        <TagModal modalShown={this.state.modalShown}/>
+        <TagModal
+          modalShown={this.state.modalShown}
+          showModal={this.showModal}  
+        />
       </div>
     );
   }
