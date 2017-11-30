@@ -27,7 +27,8 @@ class App extends Component {
       liquidInput: "",
       parsedLiquid: "",
       errors: [],
-      modalShown: false
+      modalShown: false,
+      lastEditorCursorLocation: null
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
@@ -45,7 +46,8 @@ class App extends Component {
   }
 
   handleFilterInsertion = (event) => {
-    console.log(event.target.getAttribute("data-insertion-name"))
+    // TODO: Append selected filter to editor body at last cursor location
+    console.log(event.target.getAttribute("data-insertion-name"));
   }
 
   liquidParser = () => {
