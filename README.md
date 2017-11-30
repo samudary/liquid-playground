@@ -8,3 +8,4 @@
 - Multiple variable creation
 - Handle tag arrays appropriately
 - Create and register Drip specific filters
+- Allow users to select from premade Liquid recipes
