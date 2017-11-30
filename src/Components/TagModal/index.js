@@ -5,6 +5,7 @@ import liquidReferences from '../../data/liquidReferences';
 const ReferenceItem = (props) => {
   return (
     <li
+      className="has-text-left filter__item"
       data-insertion-name={props.reference.filter}
       onClick={props.clickHandler}
     >
@@ -40,6 +41,7 @@ const TagModal = (props) => {
         
         <div className="modal-content">
           <div className="modal__card">
+            <h3 className="has-text-left is-size-5">Click the filter name to copy it to the clipboard</h3>
             <ReferenceList
               handleFilterInsertion={props.handleFilterInsertion}
             />

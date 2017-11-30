@@ -4,6 +4,9 @@ import Liquid from 'liquid-node';
 import _ from 'lodash';
 import 'bulma/css/bulma.css';
 
+// Data
+import liquidReferences from '../data/liquidReferences';
+
 // Assets
 import './App.css';
 
@@ -70,7 +73,8 @@ export default class App extends Component {
 
   handleFilterInsertion = (event) => {
     let selectedFilter = event.target.getAttribute("data-insertion-name");
-    this.copyToClipBoard(selectedFilter);
+    let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
+    this.copyToClipBoard(filterShortcut[0].shortcut);
   }
 
   liquidParser = () => {

@@ -1,5 +1,13 @@
 .modal__card {
   background-color: white;
   border-radius: 5px;
-  padding: 15px;
+  padding: 15px 20px;
+}
+
+.modal__card h3 {
+  margin-bottom: 14px;
+}
+
+.modal__card .filter__item {
+  margin-bottom: 8px;
 }
