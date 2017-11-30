@@ -41,8 +41,8 @@ const TagModal = (props) => {
         
         <div className="modal-content">
           <div className="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title has-text-left">Click the filter name to copy it to the clipboard <span className="has-text-primary">{props.filterCopied ? "Copied!" : ""}</span></p>
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-left">Click the filter name to copy it to the clipboard <span className="has-text-primary">{props.filterCopied ? "Copied!" : ""}</span></p>
               
               <button
                 className="delete"
@@ -50,7 +50,7 @@ const TagModal = (props) => {
                 aria-label="close"></button>
             </header>
 
-            <section class="modal-card-body">
+            <section className="modal-card-body">
               <ReferenceList
                 handleFilterInsertion={props.handleFilterInsertion}
               />
