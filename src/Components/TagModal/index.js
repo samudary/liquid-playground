@@ -9,13 +9,13 @@ const ReferenceItem = (props) => {
       data-insertion-name={props.reference.filter}
       onClick={props.clickHandler}
     >
-      {props.reference.filter}: <code>{props.reference.info}</code>
+      {props.reference.filter}: {props.reference.info}
     </li>
   );
 }
 
 const ReferenceList = (props) => {
-  const references = liquidReferences.map((reference, i) =>
+  const references = liquidReferences.map((reference) =>
     <ReferenceItem
       key={reference.filter}
       reference={reference}
@@ -40,18 +40,23 @@ const TagModal = (props) => {
         ></div>
         
         <div className="modal-content">
-          <div className="modal__card">
-            <h3 className="has-text-left is-size-5">Click the filter name to copy it to the clipboard</h3>
-            <ReferenceList
-              handleFilterInsertion={props.handleFilterInsertion}
-            />
+          <div className="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title has-text-left">Click the filter name to copy it to the clipboard <span className="has-text-primary">{props.filterCopied ? "Copied!" : ""}</span></p>
+              
+              <button
+                className="delete"
+                onClick={props.showModal}
+                aria-label="close"></button>
+            </header>
+
+            <section class="modal-card-body">
+              <ReferenceList
+                handleFilterInsertion={props.handleFilterInsertion}
+              />
+            </section>
           </div>
         </div>
-
-        <button
-          className="modal-close is-large"
-          onClick={props.showModal}
-          aria-label="close"></button>
       </div>
     </div>
   )

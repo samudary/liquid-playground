@@ -36,7 +36,8 @@ export default class App extends Component {
       parsedLiquid: "",
       errors: [],
       modalShown: false,
-      lastEditorCursorLocation: null
+      lastEditorCursorLocation: null,
+      filterCopied: false
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
@@ -75,6 +76,7 @@ export default class App extends Component {
     let selectedFilter = event.target.getAttribute("data-insertion-name");
     let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
     this.copyToClipBoard(filterShortcut[0].shortcut);
+    this.setState({filterCopied: true})
   }
 
   liquidParser = () => {
@@ -132,6 +134,7 @@ export default class App extends Component {
   showModal = (event) => {
     let modalState = this.state.modalShown;
     this.setState({ modalShown: !modalState });
+    this.setState({ filterCopied: false })
   }
 
   render() {
@@ -178,6 +181,7 @@ export default class App extends Component {
           modalShown={this.state.modalShown}
           showModal={this.showModal}
           handleFilterInsertion={this.handleFilterInsertion}
+          filterCopied={this.state.filterCopied}
         />
       </div>
     );
