@@ -30,3 +30,7 @@
 .column-adjusted {
   margin-top: 30px;
 }
+
+.modal__trigger {
+  margin-top: 15px;
+}

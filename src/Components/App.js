@@ -4,6 +4,9 @@ import Liquid from 'liquid-node';
 import _ from 'lodash';
 import 'bulma/css/bulma.css';
 
+// Data
+import liquidReferences from '../data/liquidReferences';
+
 // Assets
 import './App.css';
 
@@ -13,6 +16,7 @@ import InputHeader from './InputHeader';
 import Input from './Input';
 import Renderer from './Renderer';
 import Footer from './Footer';
+import TagModal from './TagModal';
 
 export default class App extends Component {
   constructor(props) {
@@ -30,13 +34,18 @@ export default class App extends Component {
       editedValue: "",
       liquidInput: "",
       parsedLiquid: "",
-      errors: []
+      errors: [],
+      modalShown: false,
+      lastEditorCursorLocation: null,
+      filterCopied: false
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.handleFilterInsertion = this.handleFilterInsertion.bind(this);
     this.testVar = this.testVar.bind(this);
     this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
     this.tagValueHandler = this.tagValueHandler.bind(this);
@@ -46,6 +55,28 @@ export default class App extends Component {
   handleLiquidInput = (html, text) => {
     // this.setState({ liquidInput: event.target.value });
     this.setState({ liquidInput: text });
+  }
+
+  copyToClipBoard = (data) => {
+    // Create a "hidden" input
+    let aux = document.createElement("input");
+    // Assign it the value of the specified element
+    aux.setAttribute("value", data);
+    // Append it to the body
+    document.body.appendChild(aux);
+    // Highlight its content
+    aux.select();
+    // Copy the highlighted text
+    document.execCommand("copy");
+    // Remove it from the body
+    document.body.removeChild(aux);
+  }
+
+  handleFilterInsertion = (event) => {
+    let selectedFilter = event.target.getAttribute("data-insertion-name");
+    let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
+    this.copyToClipBoard(filterShortcut[0].shortcut);
+    this.setState({filterCopied: true})
   }
 
   liquidParser = () => {
@@ -100,6 +131,12 @@ export default class App extends Component {
     // TODO: store variable in local storage
   }
 
+  showModal = (event) => {
+    let modalState = this.state.modalShown;
+    this.setState({ modalShown: !modalState });
+    this.setState({ filterCopied: false })
+  }
+
   render() {
     return (
       <div className="App container">
@@ -123,6 +160,11 @@ export default class App extends Component {
             <Input
               handleLiquidInput={this.handleLiquidInput}
             />
+
+            <a
+              className="button is-pulled-left modal__trigger"
+              onClick={this.showModal}
+            >Liquid Reference</a>
           </div>
 
           <div className="column column-adjusted">
@@ -135,6 +177,12 @@ export default class App extends Component {
         <p className="has-text-left">Errors: {this.state.errors}</p>
 
         <Footer />
+        <TagModal
+          modalShown={this.state.modalShown}
+          showModal={this.showModal}
+          handleFilterInsertion={this.handleFilterInsertion}
+          filterCopied={this.state.filterCopied}
+        />
       </div>
     );
   }
