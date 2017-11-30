@@ -35,12 +35,17 @@ class App extends Component {
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
     this.showModal = this.showModal.bind(this);
+    this.handleFilterInsertion = this.handleFilterInsertion.bind(this);
     this.engine = new Liquid.Engine();
   }
 
   handleLiquidInput = (html, text) => {
     // this.setState({ liquidInput: event.target.value });
     this.setState({ liquidInput: text });
+  }
+
+  handleFilterInsertion = (event) => {
+    console.log(event.target.getAttribute("data-insertion-name"))
   }
 
   liquidParser = () => {
@@ -116,7 +121,8 @@ class App extends Component {
         <Footer />
         <TagModal
           modalShown={this.state.modalShown}
-          showModal={this.showModal}  
+          showModal={this.showModal}
+          handleFilterInsertion={this.handleFilterInsertion}
         />
       </div>
     );

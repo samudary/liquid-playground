@@ -2,11 +2,32 @@ import React from 'react';
 import './index.css';
 import liquidReferences from '../../data/liquidReferences';
 
-const references = liquidReferences.map((reference) =>
-  <li key={reference.filter}>
-    {reference.filter}: <code>{reference.info}</code>
-  </li>
-);
+const ReferenceItem = (props) => {
+  return (
+    <li
+      data-insertion-name={props.reference.filter}
+      onClick={props.clickHandler}
+    >
+      {props.reference.filter}: <code>{props.reference.info}</code>
+    </li>
+  );
+}
+
+const ReferenceList = (props) => {
+  const references = liquidReferences.map((reference, i) =>
+    <ReferenceItem
+      key={reference.filter}
+      reference={reference}
+      clickHandler={props.handleFilterInsertion}
+    />
+  );
+
+  return (
+    <ul>
+      {references}
+    </ul>
+  );
+}
 
 const TagModal = (props) => {
   return (
@@ -19,7 +40,9 @@ const TagModal = (props) => {
         
         <div className="modal-content">
           <div className="modal__card">
-            <ul>{references}</ul>
+            <ReferenceList
+              handleFilterInsertion={props.handleFilterInsertion}
+            />
           </div>
         </div>
 
