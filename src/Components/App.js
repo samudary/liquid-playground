@@ -99,7 +99,7 @@ class App extends Component {
             />
 
             <a
-              className="button is-pulled-left"
+              className="button is-pulled-left modal__trigger"
               onClick={this.showModal}
             >Liquid Reference</a>
           </div>

@@ -1,5 +1,12 @@
 import React from 'react';
 import './index.css';
+import liquidReferences from '../../data/liquidReferences';
+
+const references = liquidReferences.map((reference) =>
+  <li key={reference.filter}>
+    {reference.filter}: <code>{reference.info}</code>
+  </li>
+);
 
 const TagModal = (props) => {
   return (
@@ -11,7 +18,9 @@ const TagModal = (props) => {
         ></div>
         
         <div className="modal-content">
-          <div className="modal__card">Some content to get started</div>
+          <div className="modal__card">
+            <ul>{references}</ul>
+          </div>
         </div>
 
         <button

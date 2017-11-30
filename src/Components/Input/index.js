@@ -11,7 +11,7 @@ const Input = (props) => {
         <div className="control">
           <TrixEditor
             className="textarea"
-            placeholder="Enter your Liquid statements here and they'll get rendered on the right"
+            placeholder="Enter your Liquid statements here and they'll get rendered"
             onChange={props.handleLiquidInput}
             rows="15"
           />
