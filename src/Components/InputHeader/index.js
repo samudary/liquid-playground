@@ -7,9 +7,41 @@ const InputHeader = (props) => {
       <div className="columns">
         <div className="column column-adjusted">
           <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>. You can change this object name below.</p>
+
+          <ul className="has-text-left">
+            <li><code>first_name: "Robyn"</code></li>
+            <li><code>last_name: "Samuda"</code></li>
+          </ul>
         </div>
 
         <div className="column column-adjusted">
+          <div className="field is-grouped">
+            <p className="control">
+              <input
+                id="identifier"
+                className="input"
+                type="text"
+                placeholder="The identifier"
+                onChange={props.tagIdentifierHandler}
+              />
+
+              <input
+                id="value"
+                className="input"
+                type="text"
+                placeholder="The value"
+                onChange={props.tagValueHandler}
+              />
+            </p>
+
+            <div className="control">
+              <a
+                className="button is-info"
+                onClick={props.testVar}>Add Variable
+              </a>
+            </div>
+          </div>
+
           <div className="field is-grouped">
             <p className="control">
               <input className="input"

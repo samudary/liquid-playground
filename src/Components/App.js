@@ -14,7 +14,7 @@ import Input from './Input';
 import Renderer from './Renderer';
 import Footer from './Footer';
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -23,6 +23,11 @@ class App extends Component {
         editedObjectName: "",
         chosenObjectName: "subscriber"
       },
+      customVariables: [],
+      variablesEdited: {
+      },
+      editedIdentifier: "",
+      editedValue: "",
       liquidInput: "",
       parsedLiquid: "",
       errors: []
@@ -32,6 +37,9 @@ class App extends Component {
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
     this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
+    this.testVar = this.testVar.bind(this);
+    this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
+    this.tagValueHandler = this.tagValueHandler.bind(this);
     this.engine = new Liquid.Engine();
   }
 
@@ -62,8 +70,27 @@ class App extends Component {
     this.setState({ variables: { editedObjectName: event.target.value } });
   }
 
+  tagIdentifierHandler = (event) => {
+    event.preventDefault();
+    this.setState({ editedIdentifier: event.target.value });
+  }
+
+  tagValueHandler = (event) => {
+    event.preventDefault();
+    this.setState({ editedValue: event.target.value });
+  }
+
+  testVar = (event) => {
+    let identifier = this.state.editedIdentifier;
+    let value = this.state.editedValue;
+    event.preventDefault();
+    document.getElementById("identifier").value = "";
+    document.getElementById("value").value = "";
+  }
+
   localStorageHandler = (event) => {
     event.preventDefault();
+    document.getElementById("variable").value = "";
     this.setState({
       variables: {
         chosenObjectName: this.state.variables.editedObjectName
@@ -77,10 +104,17 @@ class App extends Component {
       <div className="App container">
         <PageHeader />
 
+        ID: {this.state.editedIdentifier}
+        Value: {this.state.editedValue}
+
         <InputHeader
           storeVariable={this.localStorageHandler}
           inputChange={this.inputChangedHandler}
-          defaultObject={this.state.variables.chosenObjectName}
+          defaultObject={this.state.variables.editedObjectName}
+          customVariables={this.state.customVariables}
+          testVar={this.testVar}
+          tagIdentifierHandler={this.tagIdentifierHandler}
+          tagValueHandler={this.tagValueHandler}
         />
 
         <div className="columns">
@@ -104,5 +138,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
