@@ -53,9 +53,24 @@ export default class App extends Component {
     this.setState({ liquidInput: text });
   }
 
+  copyToClipBoard = (data) => {
+    // Create a "hidden" input
+    let aux = document.createElement("input");
+    // Assign it the value of the specified element
+    aux.setAttribute("value", data);
+    // Append it to the body
+    document.body.appendChild(aux);
+    // Highlight its content
+    aux.select();
+    // Copy the highlighted text
+    document.execCommand("copy");
+    // Remove it from the body
+    document.body.removeChild(aux);
+  }
+
   handleFilterInsertion = (event) => {
-    // TODO: Append selected filter to editor body at last cursor location
-    console.log(event.target.getAttribute("data-insertion-name"));
+    let selectedFilter = event.target.getAttribute("data-insertion-name");
+    this.copyToClipBoard(selectedFilter);
   }
 
   liquidParser = () => {

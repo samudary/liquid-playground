@@ -10,6 +10,8 @@ const Input = (props) => {
         <label className="label has-text-left"></label>
         <div className="control">
           <TrixEditor
+            // data-insertion-id="liquid-editor"
+            onEditorReady={props.appendFilter}
             className="textarea"
             placeholder="Enter your Liquid statements here and they'll get rendered"
             onChange={props.handleLiquidInput}
