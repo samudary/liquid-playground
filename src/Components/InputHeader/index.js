@@ -32,18 +32,8 @@ const InputHeader = (props) => {
     <div className="InputHeader">
       <div className="columns">
         <div className="column column-adjusted">
-          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>. Need some field data to start working with, here are a few:</p>
+          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>.</p>
 
-          <table className="table is-hoverable is-fullwidth is-bordered">
-            <thead>
-              <th>Identifier</th>
-              <th>Value</th>
-            </thead>
-            <TagList />
-          </table>
-        </div>
-
-        <div className="column column-adjusted">
           <div className="field is-grouped">
             <p className="control">
               <input
@@ -88,6 +78,21 @@ const InputHeader = (props) => {
           <div className="variable-list has-text-left">
             <strong>Current Liquid object</strong>: <code>{props.defaultObject}</code>
           </div>
+        </div>
+
+        <div className="column column-adjusted">
+          <p className="has-text-left">Need some field data to start working with? Here are a few:</p>
+
+          <table className="table is-hoverable is-fullwidth is-bordered">
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            
+            <TagList />
+          </table>
         </div>
       </div>
     </div>
