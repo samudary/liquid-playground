@@ -6,6 +6,7 @@ import 'bulma/css/bulma.css';
 
 // Data
 import liquidReferences from '../data/liquidReferences';
+import defaultLiquidObject from '../data/subscriberObject';
 
 // Assets
 import './App.css';
@@ -81,10 +82,12 @@ export default class App extends Component {
 
   liquidParser = () => {
     let chosenObject = this.state.variables.chosenObjectName;
+    let liquidObject = defaultLiquidObject();
 
     this.engine
       .parse(this.state.liquidInput)
-      .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
+      // .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
+      .then((template) => { return template.render({ liquidObject })})
       .catch((ex) => { this.setState({ errors: [ex.name] }) })
       // TODO: Better error handling
       .then((result) => {
