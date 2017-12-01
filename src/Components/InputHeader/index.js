@@ -1,17 +1,46 @@
 import React from 'react';
 import './InputHeader.css';
+import defaultLiquidObject from '../../data/subscriberObject';
+
+const TagItem = (props) => {
+  return (
+    <tr>
+      <td>{props.identifier}</td>
+      <td><code>{props.value}</code></td>
+    </tr>
+  );
+}
+
+const TagList = (props) => {
+  const list = Object.entries(defaultLiquidObject().subscriber).map((list) =>
+    <TagItem
+      key={list[0]}
+      identifier={list[0]}
+      value={list[1]}
+    />
+  );
+
+  return (
+    <tbody>
+      {list}
+    </tbody>
+  );
+}
 
 const InputHeader = (props) => {
   return (
     <div className="InputHeader">
       <div className="columns">
         <div className="column column-adjusted">
-          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>. You can change this object name below.</p>
+          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>. Need some field data to start working with, here are a few:</p>
 
-          <ul className="has-text-left">
-            <li><code>first_name: "Robyn"</code></li>
-            <li><code>last_name: "Samuda"</code></li>
-          </ul>
+          <table className="table is-hoverable is-fullwidth is-bordered">
+            <thead>
+              <th>Identifier</th>
+              <th>Value</th>
+            </thead>
+            <TagList />
+          </table>
         </div>
 
         <div className="column column-adjusted">

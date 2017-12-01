@@ -27,6 +27,10 @@
   to { transform: rotate(360deg); }
 }
 
+body {
+  font-size: 0.9rem;
+}
+
 .column-adjusted {
   margin-top: 30px;
 }
