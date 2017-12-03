@@ -37,7 +37,8 @@ export default class App extends Component {
       parsedLiquid: "",
       errors: [],
       modalShown: false,
-      filterCopied: false
+      filterCopied: false,
+      activeTab: 'Default Fields'
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
@@ -49,12 +50,17 @@ export default class App extends Component {
     this.testVar = this.testVar.bind(this);
     this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
     this.tagValueHandler = this.tagValueHandler.bind(this);
+    this.handleTabSelection = this.handleTabSelection.bind(this);
     this.engine = new Liquid.Engine();
   }
 
   handleLiquidInput = (html, text) => {
     // this.setState({ liquidInput: event.target.value });
     this.setState({ liquidInput: text });
+  }
+
+  handleTabSelection = (tab) => {
+    this.setState({activeTab: tab.name});
   }
 
   copyToClipBoard = (data) => {
@@ -154,6 +160,8 @@ export default class App extends Component {
           testVar={this.testVar}
           tagIdentifierHandler={this.tagIdentifierHandler}
           tagValueHandler={this.tagValueHandler}
+          handleTabSelection={this.handleTabSelection}
+          activeTab={this.state.activeTab}
         />
 
         <div className="columns">
