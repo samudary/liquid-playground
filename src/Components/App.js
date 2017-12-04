@@ -25,8 +25,7 @@ export default class App extends Component {
 
     this.state = {
       variables: {
-        editedObjectName: "",
-        chosenObjectName: "subscriber"
+        editedObjectName: ""
       },
       customVariables: [],
       variablesEdited: {
@@ -38,7 +37,8 @@ export default class App extends Component {
       errors: [],
       modalShown: false,
       filterCopied: false,
-      activeTab: 'Default Fields'
+      activeTab: 'Default Fields',
+      customLiquidObject: {test: "TEsted"}
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
@@ -86,12 +86,11 @@ export default class App extends Component {
   }
 
   liquidParser = () => {
-    let chosenObject = this.state.variables.chosenObjectName;
+    let combinedFields = _.assign({}, this.state.customLiquidObject, defaultLiquidObject().subscriber);
 
     this.engine
       .parse(this.state.liquidInput)
-      // .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
-      .then((template) => { return template.render(defaultLiquidObject()) })
+      .then((template) => { return template.render({subscriber: combinedFields}) })
       .catch((ex) => { this.setState({ errors: [ex.name] }) })
       // TODO: Better error handling
       .then((result) => {
