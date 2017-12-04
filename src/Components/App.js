@@ -38,7 +38,7 @@ export default class App extends Component {
       modalShown: false,
       filterCopied: false,
       activeTab: 'Default Fields',
-      customLiquidObject: {test: "TEsted"}
+      customLiquidObject: {}
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
