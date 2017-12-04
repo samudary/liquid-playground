@@ -24,14 +24,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      variables: {
-        editedObjectName: ""
-      },
       customVariables: [],
-      variablesEdited: {
-      },
-      editedIdentifier: "",
-      editedValue: "",
       liquidInput: "",
       parsedLiquid: "",
       errors: [],
@@ -43,15 +36,11 @@ export default class App extends Component {
       customFieldValue: ""
     }
 
-    this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
-    this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleFilterInsertion = this.handleFilterInsertion.bind(this);
     this.handleCustomFieldCreation = this.handleCustomFieldCreation.bind(this);
-    this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
-    this.tagValueHandler = this.tagValueHandler.bind(this);
     this.handleTabSelection = this.handleTabSelection.bind(this);
     this.handleFieldInputChange = this.handleFieldInputChange.bind(this);
     this.engine = new Liquid.Engine();
@@ -125,31 +114,6 @@ export default class App extends Component {
     }
   }
 
-  inputChangedHandler = (event) => {
-    this.setState({ variables: { editedObjectName: event.target.value } });
-  }
-
-  tagIdentifierHandler = (event) => {
-    event.preventDefault();
-    this.setState({ editedIdentifier: event.target.value });
-  }
-
-  tagValueHandler = (event) => {
-    event.preventDefault();
-    this.setState({ editedValue: event.target.value });
-  }
-
-  localStorageHandler = (event) => {
-    event.preventDefault();
-    document.getElementById("variable").value = "";
-    this.setState({
-      variables: {
-        chosenObjectName: this.state.variables.editedObjectName
-      }
-    });
-    // TODO: store variable in local storage
-  }
-
   showModal = (event) => {
     let modalState = this.state.modalShown;
     this.setState({ modalShown: !modalState });
@@ -161,17 +125,8 @@ export default class App extends Component {
       <div className="App container">
         <PageHeader />
 
-        ID: {this.state.editedIdentifier}
-        Value: {this.state.editedValue}
-
         <InputHeader
-          storeVariable={this.localStorageHandler}
-          inputChange={this.inputChangedHandler}
-          defaultObject={this.state.variables.editedObjectName}
-          customVariables={this.state.customVariables}
           handleCustomFieldCreation={this.handleCustomFieldCreation}
-          tagIdentifierHandler={this.tagIdentifierHandler}
-          tagValueHandler={this.tagValueHandler}
           handleTabSelection={this.handleTabSelection}
           activeTab={this.state.activeTab}
           handleFieldInputChange={this.handleFieldInputChange}
