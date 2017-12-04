@@ -9,7 +9,7 @@ const tabData = [
 
 const Tabs = (props) => {
   return (
-    <div className="tabs is-centered is-boxed is-small">
+    <div className="tabs is-centered is-boxed">
       <ul>
         {tabData.map((tab) => {
           return (
