@@ -14,59 +14,39 @@ const InputHeader = (props) => {
           <div className="custom-fields__create">
             <div className="field">
               <div className="control">
-                <input className="input" type="text" placeholder="Enter an identifier" />
+                <input
+                  className="input"
+                  name="customFieldIdentifier"
+                  type="text"
+                  placeholder="Enter an identifier"
+                  onChange={props.handleFieldInputChange}
+                />
               </div>
-              <p class="help">For example, <code>my_date_of_birth</code></p>
+              <p className="help">For example, <code>my_date_of_birth</code></p>
             </div>
 
             <div className="field">
               <div className="control">
-                <input className="input" type="text" placeholder="Enter the value" />
+                <input
+                  className="input"
+                  name="customFieldValue"
+                  type="text"
+                  placeholder="Enter the value"
+                  onChange={props.handleFieldInputChange}
+                />
               </div>
-              <p class="help">For example, <code>December 28, 1985</code></p>
+              <p className="help">For example, <code>December 28, 1985</code></p>
             </div>
 
-            {/* <p className="control">
-              <input
-                id="identifier"
-                className="input"
-                type="text"
-                placeholder="The identifier"
-                onChange={props.tagIdentifierHandler}
-              />
-
-              <input
-                id="value"
-                className="input"
-                type="text"
-                placeholder="The value"
-                onChange={props.tagValueHandler}
-              />
-            </p> */}
             <div className="field">
               <div className="control">
                 <a
                   className="button is-info"
-                  onClick={props.testVar}>Create Custom Field
+                  onClick={props.handleCustomFieldCreation}>Create Custom Field
                 </a>
               </div>
             </div>
           </div>
-
-          {/* <div className="field is-grouped">
-            <p className="control">
-              <input className="input"
-                type="text"
-                placeholder="Change base variable"
-                onChange={props.inputChange}
-              />
-            </p>
-            <div className="control">
-              <a
-                className="button is-info"
-                onClick={props.storeVariable}>Change Variable</a>
-            </div>
-          </div> */}
         </div>
 
         <div className="column column-adjusted">

@@ -38,7 +38,9 @@ export default class App extends Component {
       modalShown: false,
       filterCopied: false,
       activeTab: 'Default Fields',
-      customLiquidObject: {}
+      customLiquidObject: {},
+      customFieldIdentifier: "",
+      customFieldValue: ""
     }
 
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
@@ -47,11 +49,30 @@ export default class App extends Component {
     this.liquidParser = this.liquidParser.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleFilterInsertion = this.handleFilterInsertion.bind(this);
-    this.testVar = this.testVar.bind(this);
+    this.handleCustomFieldCreation = this.handleCustomFieldCreation.bind(this);
     this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
     this.tagValueHandler = this.tagValueHandler.bind(this);
     this.handleTabSelection = this.handleTabSelection.bind(this);
+    this.handleFieldInputChange = this.handleFieldInputChange.bind(this);
     this.engine = new Liquid.Engine();
+  }
+
+  handleFieldInputChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({[name]: value})
+  }
+
+  handleCustomFieldCreation = () => {
+    const editedFields = {
+      [this.state.customFieldIdentifier]: this.state.customFieldValue
+    }
+    const allCustomFields = _.assign({}, this.state.customLiquidObject, editedFields);
+
+    this.setState({
+      customLiquidObject: allCustomFields
+    });
   }
 
   handleLiquidInput = (html, text) => {
@@ -118,14 +139,6 @@ export default class App extends Component {
     this.setState({ editedValue: event.target.value });
   }
 
-  testVar = (event) => {
-    let identifier = this.state.editedIdentifier;
-    let value = this.state.editedValue;
-    event.preventDefault();
-    document.getElementById("identifier").value = "";
-    document.getElementById("value").value = "";
-  }
-
   localStorageHandler = (event) => {
     event.preventDefault();
     document.getElementById("variable").value = "";
@@ -156,11 +169,12 @@ export default class App extends Component {
           inputChange={this.inputChangedHandler}
           defaultObject={this.state.variables.editedObjectName}
           customVariables={this.state.customVariables}
-          testVar={this.testVar}
+          handleCustomFieldCreation={this.handleCustomFieldCreation}
           tagIdentifierHandler={this.tagIdentifierHandler}
           tagValueHandler={this.tagValueHandler}
           handleTabSelection={this.handleTabSelection}
           activeTab={this.state.activeTab}
+          handleFieldInputChange={this.handleFieldInputChange}
         />
 
         <div className="columns">
