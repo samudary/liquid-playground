@@ -6,6 +6,8 @@ const tabData = [
   { name: "Your Custom Fields", isActive: false }
 ];
 
+const defaultFields = defaultLiquidObject().subscriber;
+
 const TagItem = (props) => {
   return (
     <tr>
@@ -15,8 +17,25 @@ const TagItem = (props) => {
   );
 }
 
-const TagList = (props) => {
-  const list = Object.entries(defaultLiquidObject().subscriber).map((list) =>
+const DefaultTagList = (props) => {
+  const list = Object.entries(defaultFields).map((list) =>
+
+    <TagItem
+      key={list[0]}
+      identifier={list[0]}
+      value={list[1]}
+    />
+  );
+
+  return (
+    <tbody>
+      {list}
+    </tbody>
+  );
+}
+
+const CustomTagList = (props) => {
+  const list = Object.entries(props.customFields).map((list) =>
 
     <TagItem
       key={list[0]}
@@ -78,13 +97,28 @@ const TabContent = (props) => {
               </tr>
             </thead>
             
-            <TagList />
+            <DefaultTagList />
           </table>
         </div>
       }
 
       {tabName === 'Your Custom Fields' &&
-        <p>Enter your custom fields here</p>
+        <div>
+          <p className="has-text-left">Your custom field data:</p>
+          
+          <table className="table is-hoverable is-fullwidth is-bordered">
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            
+            <CustomTagList
+              customFields={props.customFields}
+            />
+          </table>
+        </div>
       }
     </div>
   );
@@ -97,7 +131,10 @@ const TabsWithContent = (props) => {
         activeTab={props.activeTab}
         changeTab={props.changeTab}
       />
-      <TabContent activeTab={props.activeTab} />
+      <TabContent
+        activeTab={props.activeTab}
+        customFields={props.customFields}
+      />
     </div>
   );
 }

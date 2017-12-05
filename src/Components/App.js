@@ -130,6 +130,7 @@ export default class App extends Component {
           handleTabSelection={this.handleTabSelection}
           activeTab={this.state.activeTab}
           handleFieldInputChange={this.handleFieldInputChange}
+          customFields={this.state.customLiquidObject}
         />
 
         <div className="columns">

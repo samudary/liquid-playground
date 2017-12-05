@@ -53,6 +53,7 @@ const InputHeader = (props) => {
           <TabsWithContent
             activeTab={props.activeTab}
             changeTab={props.handleTabSelection}
+            customFields={props.customFields}
           />
         </div>
       </div>
