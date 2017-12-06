@@ -60,7 +60,8 @@ export default class App extends Component {
     const allCustomFields = _.assign({}, this.state.customLiquidObject, editedFields);
 
     this.setState({
-      customLiquidObject: allCustomFields
+      customLiquidObject: allCustomFields,
+      activeTab: "Your Custom Fields"
     });
   }
 
