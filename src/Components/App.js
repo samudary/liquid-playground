@@ -46,6 +46,39 @@ export default class App extends Component {
     this.engine = new Liquid.Engine();
   }
 
+  storageAvailable = (type) => {
+    try {
+      let storage = window[type],
+        x = '__storage__test';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    }
+    catch(e) {
+      let storage = window[type];
+      return e instanceof DOMException && (
+        // everything except Firefox
+        e.code === 22 ||
+        // Firefox
+        e.code === 1014 ||
+        // test name field too, because code might not be present
+        // everything except Firefox
+        e.name === 'QuotaExceededError' ||
+        //Firefox
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+        // acknowledge QuotaExceededError only if there's something already stored
+        storage.length !== 0;
+    }
+  }
+
+  handleLiquidStorage = (customLiquidObject) => {
+    if (this.storageAvailable('localStorage')) {
+      localStorage.setItem('customLiquidObject', JSON.stringify(customLiquidObject));
+    } else {
+      console.log("Storage not available");
+    }
+  }
+
   handleFieldInputChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -112,6 +145,7 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (!_.isEqual(prevState, this.state)) {
       this.liquidParser();
+      this.handleLiquidStorage(this.state.customLiquidObject);
     }
   }
 
