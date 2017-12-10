@@ -1,8 +1,9 @@
-// Libraries
+// Libraries & Utilities
 import React, { Component } from 'react';
 import Liquid from 'liquid-node';
 import _ from 'lodash';
 import 'bulma/css/bulma.css';
+import helpers from './helpers';
 
 // Data
 import liquidReferences from '../data/liquidReferences';
@@ -24,7 +25,6 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      customVariables: [],
       liquidInput: "",
       parsedLiquid: "",
       errors: [],
@@ -46,45 +46,10 @@ export default class App extends Component {
     this.engine = new Liquid.Engine();
   }
 
-  storageAvailable = (type) => {
-    try {
-      let storage = window[type],
-        x = '__storage__test';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-    }
-    catch(e) {
-      let storage = window[type];
-      return e instanceof DOMException && (
-        // everything except Firefox
-        e.code === 22 ||
-        // Firefox
-        e.code === 1014 ||
-        // test name field too, because code might not be present
-        // everything except Firefox
-        e.name === 'QuotaExceededError' ||
-        //Firefox
-        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-        // acknowledge QuotaExceededError only if there's something already stored
-        storage.length !== 0;
-    }
-  }
-
-  liquidStorageSetter = (customLiquidObject) => {
-    if (this.storageAvailable('localStorage')) {
-      localStorage.setItem('customLiquidObject', JSON.stringify(customLiquidObject));
-    } else {
-      console.log("Local storage not available");
-    }
-  }
-
-  liquidStorageGetter = () => {
-    if (this.storageAvailable('localStorage')) {
-      return localStorage.getItem('customLiquidObject');
-    } else {
-      console.log("Local storage not available");
-    }
+  showModal = (event) => {
+    let modalState = this.state.modalShown;
+    this.setState({ modalShown: !modalState });
+    this.setState({ filterCopied: false })
   }
 
   handleFieldInputChange = (event) => {
@@ -107,7 +72,6 @@ export default class App extends Component {
   }
 
   handleLiquidInput = (html, text) => {
-    // this.setState({ liquidInput: event.target.value });
     this.setState({ liquidInput: text });
   }
 
@@ -115,41 +79,16 @@ export default class App extends Component {
     this.setState({activeTab: tab.name});
   }
 
-  copyToClipBoard = (data) => {
-    // Create a "hidden" input
-    let aux = document.createElement("input");
-    // Assign it the value of the specified element
-    aux.setAttribute("value", data);
-    // Append it to the body
-    document.body.appendChild(aux);
-    // Highlight its content
-    aux.select();
-    // Copy the highlighted text
-    document.execCommand("copy");
-    // Remove it from the body
-    document.body.removeChild(aux);
-  }
-
   handleFilterInsertion = (event) => {
     let selectedFilter = event.target.getAttribute("data-insertion-name");
     let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
-    this.copyToClipBoard(filterShortcut[0].shortcut);
+    helpers.copyToClipBoard(filterShortcut[0].shortcut);
     this.setState({filterCopied: true})
   }
 
-  isJsonString = (str) => {
-    try {
-      JSON.parse(str);
-    }
-    catch (e) {
-      return false;
-    }
-    return true;
-  }
-
   liquidParser = () => {
-    let localStorageLiquidObject = this.isJsonString(this.liquidStorageGetter()) ?
-      JSON.parse(this.liquidStorageGetter()) :
+    let localStorageLiquidObject = helpers.isJsonString(helpers.liquidStorageGetter()) ?
+      JSON.parse(helpers.liquidStorageGetter()) :
         {};
     
     let combinedFields = _.assign(
@@ -168,21 +107,8 @@ export default class App extends Component {
       });
   }
 
-  promiseGetter = () => {
-    return new Promise((resolve, reject) => {
-      if (this.liquidStorageGetter() !== 'undefined') {
-        let value = JSON.parse(this.liquidStorageGetter())
-        resolve(value)
-      }
-
-      if (this.liquidStorageGetter() === 'undefined') {
-        reject({})
-      }
-    })
-  }
-
   componentDidMount() {
-    this.promiseGetter()
+    helpers.promiseGetter()
       .then(response => {
         if (response !== null) {
           this.setState({ customLiquidObject: response })
@@ -190,8 +116,7 @@ export default class App extends Component {
       })
       .catch(response => {
         console.log(response)
-      })
-
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -200,14 +125,8 @@ export default class App extends Component {
     }
 
     if (!_.isEqual(prevState.customLiquidObject, this.state.customLiquidObject)) {
-      this.liquidStorageSetter(this.state.customLiquidObject);
+      helpers.liquidStorageSetter(this.state.customLiquidObject);
     }
-  }
-
-  showModal = (event) => {
-    let modalState = this.state.modalShown;
-    this.setState({ modalShown: !modalState });
-    this.setState({ filterCopied: false })
   }
 
   render() {
