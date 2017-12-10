@@ -71,11 +71,19 @@ export default class App extends Component {
     }
   }
 
-  handleLiquidStorage = (customLiquidObject) => {
+  liquidStorageSetter = (customLiquidObject) => {
     if (this.storageAvailable('localStorage')) {
       localStorage.setItem('customLiquidObject', JSON.stringify(customLiquidObject));
     } else {
-      console.log("Storage not available");
+      console.log("Local storage not available");
+    }
+  }
+
+  liquidStorageGetter = () => {
+    if (this.storageAvailable('localStorage')) {
+      return localStorage.getItem('customLiquidObject');
+    } else {
+      console.log("Local storage not available");
     }
   }
 
@@ -129,8 +137,26 @@ export default class App extends Component {
     this.setState({filterCopied: true})
   }
 
+  isJsonString = (str) => {
+    try {
+      JSON.parse(str);
+    }
+    catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   liquidParser = () => {
-    let combinedFields = _.assign({}, this.state.customLiquidObject, defaultLiquidObject().subscriber);
+    let localStorageLiquidObject = this.isJsonString(this.liquidStorageGetter()) ?
+      JSON.parse(this.liquidStorageGetter()) :
+        {};
+    
+    let combinedFields = _.assign(
+      {},
+      this.state.customLiquidObject,
+      defaultLiquidObject().subscriber,
+      localStorageLiquidObject);
 
     this.engine
       .parse(this.state.liquidInput)
@@ -142,10 +168,39 @@ export default class App extends Component {
       });
   }
 
+  promiseGetter = () => {
+    return new Promise((resolve, reject) => {
+      if (this.liquidStorageGetter() !== 'undefined') {
+        let value = JSON.parse(this.liquidStorageGetter())
+        resolve(value)
+      }
+
+      if (this.liquidStorageGetter() === 'undefined') {
+        reject({})
+      }
+    })
+  }
+
+  componentDidMount() {
+    this.promiseGetter()
+      .then(response => {
+        if (response !== null) {
+          this.setState({ customLiquidObject: response })
+        }
+      })
+      .catch(response => {
+        console.log(response)
+      })
+
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (!_.isEqual(prevState, this.state)) {
       this.liquidParser();
-      this.handleLiquidStorage(this.state.customLiquidObject);
+    }
+
+    if (!_.isEqual(prevState.customLiquidObject, this.state.customLiquidObject)) {
+      this.liquidStorageSetter(this.state.customLiquidObject);
     }
   }
 
