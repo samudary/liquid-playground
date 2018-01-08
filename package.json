@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bulma": "^0.6.1",
+    "font-awesome": "^4.7.0",
     "liquid-node": "^3.0.0",
     "lodash": "^4.17.4",
     "react": "^16.0.0",

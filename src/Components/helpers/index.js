@@ -60,6 +60,15 @@ const helpers = {
       console.log("Local storage not available");
     }
   },
+  liquidStorageDeleter(key) {
+    if (this.storageAvailable('localStorage')) {
+      let storedObject = JSON.parse(this.liquidStorageGetter());
+      delete storedObject[key];
+      this.liquidStorageSetter(storedObject);
+    } else {
+      console.log('Local storage is not available');
+    }
+  },
   promiseGetter() {
     return new Promise((resolve, reject) => {
       if (this.liquidStorageGetter() !== 'undefined') {

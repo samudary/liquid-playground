@@ -43,7 +43,15 @@ export default class App extends Component {
     this.handleCustomFieldCreation = this.handleCustomFieldCreation.bind(this);
     this.handleTabSelection = this.handleTabSelection.bind(this);
     this.handleFieldInputChange = this.handleFieldInputChange.bind(this);
+    this.deleteCustomField = this.deleteCustomField.bind(this);
     this.engine = new Liquid.Engine();
+  }
+
+  deleteCustomField = (key) => {
+    helpers.liquidStorageDeleter(key)
+    let customFields = this.state.customLiquidObject;
+    delete customFields[key];
+    this.setState({ customLiquidObject: customFields });
   }
 
   showModal = (event) => {
@@ -95,7 +103,8 @@ export default class App extends Component {
       {},
       this.state.customLiquidObject,
       defaultLiquidObject().subscriber,
-      localStorageLiquidObject);
+      localStorageLiquidObject
+    );
 
     this.engine
       .parse(this.state.liquidInput)
@@ -140,6 +149,7 @@ export default class App extends Component {
           activeTab={this.state.activeTab}
           handleFieldInputChange={this.handleFieldInputChange}
           customFields={this.state.customLiquidObject}
+          deleteCustomField={this.deleteCustomField}
         />
 
         <div className="columns">

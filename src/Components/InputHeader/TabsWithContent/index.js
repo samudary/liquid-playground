@@ -1,5 +1,7 @@
 import React from 'react';
 import defaultLiquidObject from '../../../data/subscriberObject';
+import 'font-awesome/css/font-awesome.min.css';
+import './index.css';
 
 const tabData = [
   { name: "Default Fields", isActive: true },
@@ -13,6 +15,12 @@ const TagItem = (props) => {
     <tr>
       <td>{props.identifier}</td>
       <td><code>{props.value}</code></td>
+      {props.tagType === 'customFields' ?
+        <td className="table-actions has-text-centered">
+          <span className="icon" onClick={() => props.deleteCustomField(props.identifier)}>
+            <i className="fa fa-trash-o" aria-hidden="true"></i>
+          </span>
+        </td> : null}
     </tr>
   );
 }
@@ -41,6 +49,8 @@ const CustomTagList = (props) => {
       key={list[0]}
       identifier={list[0]}
       value={list[1]}
+      tagType="customFields"
+      deleteCustomField={props.deleteCustomField}
     />
   );
 
@@ -111,11 +121,13 @@ const TabContent = (props) => {
               <tr>
                 <th>Identifier</th>
                 <th>Value</th>
+                <th>Actions</th>
               </tr>
             </thead>
             
             <CustomTagList
               customFields={props.customFields}
+              deleteCustomField={props.deleteCustomField}
             />
           </table>
         </div>
@@ -134,6 +146,7 @@ const TabsWithContent = (props) => {
       <TabContent
         activeTab={props.activeTab}
         customFields={props.customFields}
+        deleteCustomField={props.deleteCustomField}
       />
     </div>
   );

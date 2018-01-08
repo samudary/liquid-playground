@@ -54,6 +54,7 @@ const InputHeader = (props) => {
             activeTab={props.activeTab}
             changeTab={props.handleTabSelection}
             customFields={props.customFields}
+            deleteCustomField={props.deleteCustomField}
           />
         </div>
       </div>
