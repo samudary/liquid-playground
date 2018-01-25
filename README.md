@@ -2,6 +2,8 @@
 
 This tiny app is intended to solve a common problem when working with the Liquid template language and that's testing the result of running syntax on custom data. For example, let's say you're building a template or writing an email that relies on liquid to pull custom data for particular email subscribers or some other source. It would be nice to see how your liquid syntax renders for specific use cases. This app helps to solve that.
 
+You can find the general liquid reference [here](http://shopify.github.io/liquid/basics/introduction/).
+
 ### Todo
 - Setup linting
 - Better error handling and feedback
