@@ -75,7 +75,9 @@ export default class App extends Component {
 
     this.setState({
       customLiquidObject: allCustomFields,
-      activeTab: "Your Custom Fields"
+      activeTab: "Your Custom Fields",
+      customFieldIdentifier: "",
+      customFieldValue: ""
     });
   }
 
@@ -145,6 +147,8 @@ export default class App extends Component {
 
         <InputHeader
           handleCustomFieldCreation={this.handleCustomFieldCreation}
+          customFieldIdentifier={this.state.customFieldIdentifier}
+          customFieldValue={this.state.customFieldValue}
           handleTabSelection={this.handleTabSelection}
           activeTab={this.state.activeTab}
           handleFieldInputChange={this.handleFieldInputChange}

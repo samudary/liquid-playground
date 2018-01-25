@@ -20,6 +20,7 @@ const InputHeader = (props) => {
                   type="text"
                   placeholder="Enter an identifier"
                   onChange={props.handleFieldInputChange}
+                  value={props.customFieldIdentifier}
                 />
               </div>
               <p className="help">For example, <code>my_date_of_birth</code></p>
@@ -33,6 +34,7 @@ const InputHeader = (props) => {
                   type="text"
                   placeholder="Enter the value"
                   onChange={props.handleFieldInputChange}
+                  value={props.customFieldValue}
                 />
               </div>
               <p className="help">For example, <code>December 28, 1985</code></p>
