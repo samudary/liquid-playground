@@ -1,27 +1,56 @@
 import React from 'react';
 import defaultLiquidObject from '../../../data/subscriberObject';
+import 'font-awesome/css/font-awesome.min.css';
+import './index.css';
 
 const tabData = [
   { name: "Default Fields", isActive: true },
   { name: "Your Custom Fields", isActive: false }
 ];
 
+const defaultFields = defaultLiquidObject().subscriber;
+
 const TagItem = (props) => {
   return (
     <tr>
       <td>{props.identifier}</td>
       <td><code>{props.value}</code></td>
+      {props.tagType === 'customFields' ?
+        <td className="table-actions has-text-centered">
+          <span className="icon" onClick={() => props.deleteCustomField(props.identifier)}>
+            <i className="fa fa-trash-o" aria-hidden="true"></i>
+          </span>
+        </td> : null}
     </tr>
   );
 }
 
-const TagList = (props) => {
-  const list = Object.entries(defaultLiquidObject().subscriber).map((list) =>
+const DefaultTagList = (props) => {
+  const list = Object.entries(defaultFields).map((list) =>
 
     <TagItem
       key={list[0]}
       identifier={list[0]}
       value={list[1]}
+    />
+  );
+
+  return (
+    <tbody>
+      {list}
+    </tbody>
+  );
+}
+
+const CustomTagList = (props) => {
+  const list = Object.entries(props.customFields).map((list) =>
+
+    <TagItem
+      key={list[0]}
+      identifier={list[0]}
+      value={list[1]}
+      tagType="customFields"
+      deleteCustomField={props.deleteCustomField}
     />
   );
 
@@ -78,13 +107,30 @@ const TabContent = (props) => {
               </tr>
             </thead>
             
-            <TagList />
+            <DefaultTagList />
           </table>
         </div>
       }
 
       {tabName === 'Your Custom Fields' &&
-        <p>Enter your custom fields here</p>
+        <div>
+          <p className="has-text-left">Your custom field data:</p>
+          
+          <table className="table is-hoverable is-fullwidth is-bordered">
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Value</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            
+            <CustomTagList
+              customFields={props.customFields}
+              deleteCustomField={props.deleteCustomField}
+            />
+          </table>
+        </div>
       }
     </div>
   );
@@ -97,7 +143,11 @@ const TabsWithContent = (props) => {
         activeTab={props.activeTab}
         changeTab={props.changeTab}
       />
-      <TabContent activeTab={props.activeTab} />
+      <TabContent
+        activeTab={props.activeTab}
+        customFields={props.customFields}
+        deleteCustomField={props.deleteCustomField}
+      />
     </div>
   );
 }

@@ -3,7 +3,11 @@
 }
 
 .field:not(:last-child) {
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.3rem;
+}
+
+.field input {
+  width: 400px;
 }
 
 .variable-list {
@@ -15,4 +19,8 @@
 
 table {
   margin-top: 12px;
+}
+
+.custom-fields__create {
+  margin-top: 13px;
 }

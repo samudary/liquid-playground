@@ -7,51 +7,47 @@ const InputHeader = (props) => {
     <div className="InputHeader">
       <div className="columns">
         <div className="column column-adjusted">
-          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code>.</p>
+          <p className="has-text-left intro-text">By default, we're working with a <strong>subscriber</strong> object as the base Liquid object. Therefore, any custom field values, tags, etc. are accessed with: <code>{"{{ subscriber.some_identifier }}"}</code> or <code>{"{{ subscriber.tags }}"}</code></p>
 
-          <div className="field is-grouped">
-            <p className="control">
-              <input
-                id="identifier"
-                className="input"
-                type="text"
-                placeholder="The identifier"
-                onChange={props.tagIdentifierHandler}
-              />
+          <p><strong>Create custom fields data below:</strong></p>
 
-              <input
-                id="value"
-                className="input"
-                type="text"
-                placeholder="The value"
-                onChange={props.tagValueHandler}
-              />
-            </p>
-
-            <div className="control">
-              <a
-                className="button is-info"
-                onClick={props.testVar}>Add Variable
-              </a>
+          <div className="custom-fields__create">
+            <div className="field">
+              <div className="control">
+                <input
+                  className="input"
+                  name="customFieldIdentifier"
+                  type="text"
+                  placeholder="Enter an identifier"
+                  onChange={props.handleFieldInputChange}
+                  value={props.customFieldIdentifier}
+                />
+              </div>
+              <p className="help">For example, <code>my_date_of_birth</code></p>
             </div>
-          </div>
 
-          <div className="field is-grouped">
-            <p className="control">
-              <input className="input"
-                type="text"
-                placeholder="Change base variable"
-                onChange={props.inputChange}
-              />
-            </p>
-            <div className="control">
-              <a
-                className="button is-info"
-                onClick={props.storeVariable}>Change Variable</a>
+            <div className="field">
+              <div className="control">
+                <input
+                  className="input"
+                  name="customFieldValue"
+                  type="text"
+                  placeholder="Enter the value"
+                  onChange={props.handleFieldInputChange}
+                  value={props.customFieldValue}
+                />
+              </div>
+              <p className="help">For example, <code>December 28, 1985</code></p>
             </div>
-          </div>
-          <div className="variable-list has-text-left">
-            <strong>Current Liquid object</strong>: <code>{props.defaultObject}</code>
+
+            <div className="field">
+              <div className="control">
+                <a
+                  className="button is-info"
+                  onClick={props.handleCustomFieldCreation}>Create Custom Field
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -59,6 +55,8 @@ const InputHeader = (props) => {
           <TabsWithContent
             activeTab={props.activeTab}
             changeTab={props.handleTabSelection}
+            customFields={props.customFields}
+            deleteCustomField={props.deleteCustomField}
           />
         </div>
       </div>

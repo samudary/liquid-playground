@@ -1,8 +1,9 @@
-// Libraries
+// Libraries & Utilities
 import React, { Component } from 'react';
 import Liquid from 'liquid-node';
 import _ from 'lodash';
 import 'bulma/css/bulma.css';
+import helpers from './helpers';
 
 // Data
 import liquidReferences from '../data/liquidReferences';
@@ -24,118 +25,33 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      variables: {
-        editedObjectName: "",
-        chosenObjectName: "subscriber"
-      },
-      customVariables: [],
-      variablesEdited: {
-      },
-      editedIdentifier: "",
-      editedValue: "",
       liquidInput: "",
       parsedLiquid: "",
       errors: [],
       modalShown: false,
       filterCopied: false,
-      activeTab: 'Default Fields'
+      activeTab: 'Default Fields',
+      customLiquidObject: {},
+      customFieldIdentifier: "",
+      customFieldValue: ""
     }
 
-    this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
-    this.localStorageHandler = this.localStorageHandler.bind(this);
     this.liquidParser = this.liquidParser.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleFilterInsertion = this.handleFilterInsertion.bind(this);
-    this.testVar = this.testVar.bind(this);
-    this.tagIdentifierHandler = this.tagIdentifierHandler.bind(this);
-    this.tagValueHandler = this.tagValueHandler.bind(this);
+    this.handleCustomFieldCreation = this.handleCustomFieldCreation.bind(this);
     this.handleTabSelection = this.handleTabSelection.bind(this);
+    this.handleFieldInputChange = this.handleFieldInputChange.bind(this);
+    this.deleteCustomField = this.deleteCustomField.bind(this);
     this.engine = new Liquid.Engine();
   }
 
-  handleLiquidInput = (html, text) => {
-    // this.setState({ liquidInput: event.target.value });
-    this.setState({ liquidInput: text });
-  }
-
-  handleTabSelection = (tab) => {
-    this.setState({activeTab: tab.name});
-  }
-
-  copyToClipBoard = (data) => {
-    // Create a "hidden" input
-    let aux = document.createElement("input");
-    // Assign it the value of the specified element
-    aux.setAttribute("value", data);
-    // Append it to the body
-    document.body.appendChild(aux);
-    // Highlight its content
-    aux.select();
-    // Copy the highlighted text
-    document.execCommand("copy");
-    // Remove it from the body
-    document.body.removeChild(aux);
-  }
-
-  handleFilterInsertion = (event) => {
-    let selectedFilter = event.target.getAttribute("data-insertion-name");
-    let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
-    this.copyToClipBoard(filterShortcut[0].shortcut);
-    this.setState({filterCopied: true})
-  }
-
-  liquidParser = () => {
-    let chosenObject = this.state.variables.chosenObjectName;
-
-    this.engine
-      .parse(this.state.liquidInput)
-      // .then((template) => { return template.render({ [chosenObject]: { name: "Robyn"}})})
-      .then((template) => { return template.render(defaultLiquidObject()) })
-      .catch((ex) => { this.setState({ errors: [ex.name] }) })
-      // TODO: Better error handling
-      .then((result) => {
-        this.setState({ parsedLiquid: result });
-      });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!_.isEqual(prevState, this.state)) {
-      this.liquidParser();
-    }
-  }
-
-  inputChangedHandler = (event) => {
-    this.setState({ variables: { editedObjectName: event.target.value } });
-  }
-
-  tagIdentifierHandler = (event) => {
-    event.preventDefault();
-    this.setState({ editedIdentifier: event.target.value });
-  }
-
-  tagValueHandler = (event) => {
-    event.preventDefault();
-    this.setState({ editedValue: event.target.value });
-  }
-
-  testVar = (event) => {
-    let identifier = this.state.editedIdentifier;
-    let value = this.state.editedValue;
-    event.preventDefault();
-    document.getElementById("identifier").value = "";
-    document.getElementById("value").value = "";
-  }
-
-  localStorageHandler = (event) => {
-    event.preventDefault();
-    document.getElementById("variable").value = "";
-    this.setState({
-      variables: {
-        chosenObjectName: this.state.variables.editedObjectName
-      }
-    });
-    // TODO: store variable in local storage
+  deleteCustomField = (key) => {
+    helpers.liquidStorageDeleter(key)
+    let customFields = this.state.customLiquidObject;
+    delete customFields[key];
+    this.setState({ customLiquidObject: customFields });
   }
 
   showModal = (event) => {
@@ -144,24 +60,100 @@ export default class App extends Component {
     this.setState({ filterCopied: false })
   }
 
+  handleFieldInputChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({[name]: value})
+  }
+
+  handleCustomFieldCreation = () => {
+    const editedFields = {
+      [this.state.customFieldIdentifier]: this.state.customFieldValue
+    }
+    const allCustomFields = _.assign({}, this.state.customLiquidObject, editedFields);
+
+    this.setState({
+      customLiquidObject: allCustomFields,
+      activeTab: "Your Custom Fields",
+      customFieldIdentifier: "",
+      customFieldValue: ""
+    });
+  }
+
+  handleLiquidInput = (html, text) => {
+    this.setState({ liquidInput: text });
+  }
+
+  handleTabSelection = (tab) => {
+    this.setState({activeTab: tab.name});
+  }
+
+  handleFilterInsertion = (event) => {
+    let selectedFilter = event.target.getAttribute("data-insertion-name");
+    let filterShortcut = liquidReferences.filter(ref => ref.filter === selectedFilter)
+    helpers.copyToClipBoard(filterShortcut[0].shortcut);
+    this.setState({filterCopied: true})
+  }
+
+  liquidParser = () => {
+    let localStorageLiquidObject = helpers.isJsonString(helpers.liquidStorageGetter()) ?
+      JSON.parse(helpers.liquidStorageGetter()) :
+        {};
+    
+    let combinedFields = _.assign(
+      {},
+      this.state.customLiquidObject,
+      defaultLiquidObject().subscriber,
+      localStorageLiquidObject
+    );
+
+    this.engine
+      .parse(this.state.liquidInput)
+      .then((template) => { return template.render({subscriber: combinedFields}) })
+      .catch((ex) => { this.setState({ errors: [ex.name] }) })
+      // TODO: Better error handling
+      .then((result) => {
+        this.setState({ parsedLiquid: result });
+      });
+  }
+
+  componentDidMount() {
+    helpers.promiseGetter()
+      .then(response => {
+        if (response !== null) {
+          this.setState({ customLiquidObject: response })
+        }
+      })
+      .catch(response => {
+        console.log(response)
+      });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState, this.state)) {
+      this.liquidParser();
+    }
+
+    if (!_.isEqual(prevState.customLiquidObject, this.state.customLiquidObject)) {
+      helpers.liquidStorageSetter(this.state.customLiquidObject);
+    }
+  }
+
   render() {
     return (
       <div className="App container">
         <PageHeader />
 
-        ID: {this.state.editedIdentifier}
-        Value: {this.state.editedValue}
-
         <InputHeader
-          storeVariable={this.localStorageHandler}
-          inputChange={this.inputChangedHandler}
-          defaultObject={this.state.variables.editedObjectName}
-          customVariables={this.state.customVariables}
-          testVar={this.testVar}
-          tagIdentifierHandler={this.tagIdentifierHandler}
-          tagValueHandler={this.tagValueHandler}
+          handleCustomFieldCreation={this.handleCustomFieldCreation}
+          customFieldIdentifier={this.state.customFieldIdentifier}
+          customFieldValue={this.state.customFieldValue}
           handleTabSelection={this.handleTabSelection}
           activeTab={this.state.activeTab}
+          handleFieldInputChange={this.handleFieldInputChange}
+          customFields={this.state.customLiquidObject}
+          deleteCustomField={this.deleteCustomField}
         />
 
         <div className="columns">
