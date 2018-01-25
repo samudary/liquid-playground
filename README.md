@@ -10,7 +10,6 @@ You can find the general liquid reference [here](http://shopify.github.io/liquid
 - Handle tag arrays appropriately
 - Create and register Drip specific filters
 - Allow users to select from premade Liquid recipes
-- Error handling for blank custom field creation
 
 ### Preloaded liquid object and values
 
