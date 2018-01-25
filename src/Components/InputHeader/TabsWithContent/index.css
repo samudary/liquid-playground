@@ -5,3 +5,7 @@ td.table-actions {
 i {
   cursor: pointer;
 }
+
+.error {
+  color: #a00004;
+}

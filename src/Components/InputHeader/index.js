@@ -47,6 +47,7 @@ const InputHeader = (props) => {
                   onClick={props.handleCustomFieldCreation}>Create Custom Field
                 </a>
               </div>
+              {props.submissionErrorsPresent ? <p className="help error">Identifier or value can't be blank</p> : null}
             </div>
           </div>
         </div>

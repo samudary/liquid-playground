@@ -33,7 +33,8 @@ export default class App extends Component {
       activeTab: 'Default Fields',
       customLiquidObject: {},
       customFieldIdentifier: "",
-      customFieldValue: ""
+      customFieldValue: "",
+      submissionErrorsPresent: ""
     }
 
     this.handleLiquidInput = this.handleLiquidInput.bind(this);
@@ -68,6 +69,13 @@ export default class App extends Component {
   }
 
   handleCustomFieldCreation = () => {
+    console.log(this.state.customFieldValue)
+
+    if (this.state.customFieldIdentifier === "" || this.state.customFieldValue === "") {
+      this.setState({submissionErrorsPresent: true});
+      return false;
+    }
+
     const editedFields = {
       [this.state.customFieldIdentifier]: this.state.customFieldValue
     }
@@ -77,7 +85,8 @@ export default class App extends Component {
       customLiquidObject: allCustomFields,
       activeTab: "Your Custom Fields",
       customFieldIdentifier: "",
-      customFieldValue: ""
+      customFieldValue: "",
+      submissionErrorsPresent: false
     });
   }
 
@@ -154,6 +163,7 @@ export default class App extends Component {
           handleFieldInputChange={this.handleFieldInputChange}
           customFields={this.state.customLiquidObject}
           deleteCustomField={this.deleteCustomField}
+          submissionErrorsPresent={this.state.submissionErrorsPresent}
         />
 
         <div className="columns">
