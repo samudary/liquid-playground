@@ -1,19 +1,18 @@
-## Liquid Playground
+## Liquid Playground [WIP]
+
+This tiny app is intended to solve a common problem when working with the Liquid template language and that's testing the result of running syntax on custom data. For example, let's say you're building a template or writing an email that relies on liquid to pull custom data for particular email subscribers or some other source. It would be nice to see how your liquid syntax renders for specific use cases. This app helps to solve that.
 
 ### Todo
-- Install ESLint
-- Explore using trix editor - https://github.com/basecamp/trix
+- Setup linting
 - Better error handling and feedback
-- Store any used variables in browser storage
-- Install Hotjar
-- Multiple variable creation
 - Handle tag arrays appropriately
 - Create and register Drip specific filters
 - Allow users to select from premade Liquid recipes
-- Toolbar configuration: https://github.com/basecamp/trix/wiki/Configuration
 - Error handling for blank custom field creation
 
 ### Preloaded liquid object and values
+
+The app is loaded with a small object with some default values. 
 
 ```json
 "subscriber": {
