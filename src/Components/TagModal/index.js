@@ -9,7 +9,7 @@ const ReferenceItem = (props) => {
       data-insertion-name={props.reference.filter}
       onClick={props.clickHandler}
     >
-      {props.reference.filter}: {props.reference.info}
+      <span className="filter__name">{props.reference.filter}</span>: {props.reference.info}
     </li>
   );
 }

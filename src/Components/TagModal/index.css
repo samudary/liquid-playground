@@ -16,6 +16,11 @@ section .filter__item {
   margin-bottom: 8px;
 }
 
+section .filter__item span {
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .modal-card {
   border-radius: 5px;
 }
